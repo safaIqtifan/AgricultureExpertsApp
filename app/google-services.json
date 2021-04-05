@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "333098639070",
+    "project_id": "agricultureexpertsapp",
+    "storage_bucket": "agricultureexpertsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333098639070:android:feea9c76e021cb1ce8ac4f",
+        "android_client_info": {
+          "package_name": "com.example.agricultureexpertsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333098639070-aucsobk4kd545kiu1in2sik5o4dmsfni.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.agricultureexpertsapp",
+            "certificate_hash": "94847f68e8ed8d51b5c8cfaea00e860e2a6415f0"
+          }
+        },
+        {
+          "client_id": "333098639070-l6h0iailqdjkcnirpu1do4dl238nhj46.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.agricultureexpertsapp",
+            "certificate_hash": "a7c9080502dc97dbf2173d2b39a0b287c8a5747a"
+          }
+        },
+        {
+          "client_id": "333098639070-viav7rhv9p31m4e995jc0esgdquoj12m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWgHQsTfIBeNXA84hF5NBd8Di1Q7zysPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333098639070-7v2icvdhof7778ngvoqkpb805512f687.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

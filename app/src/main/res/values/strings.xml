@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Agriculture Experts App</string>
+
+
+    <string name="name">name</string>
+    <string name="Login">Login</string>
+    <string name="Signup">Signup</string>
+    <string name="Pleaselogintoyouraccount">Please login to your account.</string>
+    <string name="PleaseSignuptoyouraccount">Please Signup to your account.</string>
+    <string name="loginwith">or login with</string>
+    <string name="Signupwith">or Signup with</string>
+    <string name="Donnothaveanaccount">Don’t have an account?</string>
+    <string name="alreadyhaveanaccount">Already have an account</string>
+    <string name="TermsConditions">By signing up, you are agree with our</string>
+    <string name="Createnewnow">Createnewnow</string>
+    <string name="Logintoaccount">Login to your account</string>
+    <string name="ForgotPassword">Forgot Password?</string>
+    <string name="EmailAddress">Email Address</string>
+    <string name="Password">Password</string>
+    <string name="LOGIN">LOGIN</string>
+    <string name="search">Search</string>
+    <string name="agree">By signing up, you are agree with our</string>
+    <string name="Terms">Terms and Conditions</string>
+
+
+    <string name="title_activity_home_page">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_discussion">Discussion Room</string>
+    <string name="title_add">Add Farm</string>
+    <string name="title_create">Create Farm</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_menu">Menu</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="title_logout">Logout</string>
+    <string name="title_language">language</string>
+
+
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="user_name">Hi, safa</string>
+    <string name="text">Find Your Farm!</string>
+
+</resources>
