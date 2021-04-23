@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="colorPrimary">#74B973</color>
+    <color name="colorPrimaryDark">#62A361</color>
+    <color name="colorAccent">#289BE8</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#74B973</color>
@@ -9,12 +13,19 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="light_black">#0C0C0C</color>
+    <color name="light_black">#252424</color>
     <color name="light_black2">#655C5C</color>
     <color name="green">#789E3E</color>
     <color name="button">#74B973</color>
     <color name="background">#C1E4D1</color>
     <color name="darkblue">#11293F</color>
     <color name="blue">#25435E</color>
+    <color name="bluebtnColor">#289BE8</color>
+    <color name="gry">#CABEBE</color>
+
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/transparent
+    </color>
 
 </resources>

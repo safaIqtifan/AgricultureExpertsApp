@@ -31,7 +31,7 @@
                         android:id="@+id/backbtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="18dp"
                         android:src="@drawable/backbtn" />
 
                     <TextView
@@ -41,8 +41,15 @@
                         android:text=""
                         android:textColor="@color/darkblue"
                         android:layout_marginTop="6dp"
-                        android:layout_marginStart="6dp"
-                        android:textSize="20dp"/>
+                        android:textSize="20dp"
+                        android:layout_weight="3"/>
+
+                    <android.widget.Button
+                        android:id="@+id/changebtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/emptybtn"/>
 
                 </LinearLayout>
             </android.widget.Toolbar>

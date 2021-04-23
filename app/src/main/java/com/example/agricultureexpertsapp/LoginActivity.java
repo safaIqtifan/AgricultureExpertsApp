@@ -30,15 +30,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     public static final int REQUEST_CODE = 10005;
     EditText mEmail, mPassword;
     Button mLoginBtn;
-    ImageView gmailBtn, facebookBtn, twitterBtn;
+    ImageView gmailBtn, facebookBtn;
     TextView mCreateBtn, forgotTextLink;
     ProgressBar progressBar;
-    GoogleSignInOptions gso;
+    //GoogleSignInOptions gso;
     GoogleSignInClient signInClient;
     FirebaseAuth fAuth;
 
@@ -77,12 +77,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        GoogleSignInOptions gso = new GoogleSignInOptions
-//                .Builder()
-//               // .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-
 
         mCreateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,13 +158,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
                 passWordResetDialog.create().show();
-            }
-        });
-
-        gmailBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 

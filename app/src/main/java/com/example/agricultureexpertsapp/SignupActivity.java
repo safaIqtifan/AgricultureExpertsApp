@@ -31,7 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends BaseActivity {
 
     EditText name, e_mail, password;
     TextView mLoginBtn;
@@ -39,27 +39,10 @@ public class SignupActivity extends AppCompatActivity {
     ImageView gmailBtn, facebookBtn;
     ProgressBar progressBar;
     private FirebaseAuth fAuth;
-    GoogleSignInClient signInClient;
+    //GoogleSignInClient signInClient;
     GoogleSignInOptions gso;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.w("TAG", "000");
-        FirebaseUser user = fAuth.getCurrentUser();
-
-        if(user!=null){
-            Log.w("TAG", "111");
-            Intent intent = new Intent(getApplicationContext(),HomePageActivity.class);
-            startActivity(intent);
-        }else {
-            Log.w("TAG", "222");
-        }
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +76,11 @@ public class SignupActivity extends AppCompatActivity {
                 String email = e_mail.getText().toString();
                 String mpassword = password.getText().toString();
 
-                if (fname.isEmpty()){
+                if (fname.isEmpty()) {
                     name.setError("name is Requird");
                     return;
                 }
-                if (email.isEmpty()){
+                if (email.isEmpty()) {
                     e_mail.setError("Email is Requird");
                     return;
                 }
@@ -107,7 +90,7 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (mpassword.length() < 6){
+                if (mpassword.length() < 6) {
                     password.setError("password Must be 6 or more characters");
                 }
 
@@ -118,15 +101,15 @@ public class SignupActivity extends AppCompatActivity {
                     public void onSuccess(AuthResult authResult) {
 
                         Toast.makeText(SignupActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
-                        finish();
+                        startActivity(new Intent(SignupActivity.this, HomePageActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//                        finish();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
-                        Toast.makeText(SignupActivity.this, e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -140,6 +123,21 @@ public class SignupActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser user = fAuth.getCurrentUser();
+
+        if (user != null) {
+            Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
     }
 
@@ -163,20 +161,20 @@ public class SignupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == RC_SIGN_IN) {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                try {
-                    // Google Sign In was successful, authenticate with Firebase
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-                    firebaseAuthWithGoogle(account);
-                } catch (ApiException e) {
-                    // Google Sign In failed, update UI appropriately
-                    // ...
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+//                    account.getDisplayName();
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                // ...
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
-
+    }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
@@ -189,11 +187,15 @@ public class SignupActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = fAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(),HomePageActivity.class);
-                            startActivity(intent);
+//
+//
+//                            user.getUid()
+
+
+                            startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
                             finish();
 
-                    }else {
+                        } else {
                             Toast.makeText(SignupActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
 
                         }
