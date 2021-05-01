@@ -24,6 +24,7 @@
     <color name="gry">#CABEBE</color>
 
     <color name="transparent">#00FFFFFF</color>
+    <color name="create_farm_bg">#32707070</color>
 
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/transparent
     </color>

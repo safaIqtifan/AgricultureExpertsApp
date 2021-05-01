@@ -19,7 +19,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends BaseActivity {
 
-    ImageView background;
     final private static int splashTimeOut = 1000;
 //    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 

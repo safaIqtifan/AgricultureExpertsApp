@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="297dp"
-        android:background="@drawable/profile_background">
+        android:background="@drawable/directory_profile_background">
 
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -150,9 +150,10 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/add_post"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="50dp"
-        android:src="@drawable/upload_profile_image"/>
+        android:src="@drawable/directory_upload_profile_image"/>
 
 </LinearLayout>

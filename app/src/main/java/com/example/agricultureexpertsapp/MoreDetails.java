@@ -1,34 +1,57 @@
 package com.example.agricultureexpertsapp;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.TextView;
+
+import com.example.agricultureexpertsapp.ui.add_farm.AdapterCategories;
+import com.example.agricultureexpertsapp.models.CategoryModel;
+import com.example.agricultureexpertsapp.ui.add_farm.DataCallBack;
 
 import java.util.ArrayList;
 
 public class MoreDetails extends BaseActivity {
 
-    Util util;
+    TextView title;
+    RecyclerView categoriesRV;
+    ArrayList<CategoryModel> selectedCategories = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more_details);
 
-        util= (Util)getIntent().getSerializableExtra("util");
+        title = findViewById(R.id.title);
+        categoriesRV = findViewById(R.id.details_recyclerView);
 
-        getChecked();
+        categoriesRV.setLayoutManager(new GridLayoutManager( getActiviy(), 3, GridLayoutManager.VERTICAL, false));
+
+        selectedCategories= (ArrayList<CategoryModel>) getIntent().getSerializableExtra("selected");
+
+        title.setText(R.string.title_create);
+        initData();
+
     }
 
-    ArrayList<Util.MainLink> getChecked(){
-        ArrayList<Util.MainLink> selected = new ArrayList<>();
-        if (util!=null){
-            for (int i = 0; i < util.getLinks().size(); i++) {
-                if (util.getLinks().get(i).isChecked){
-                    selected.add(util.getLinks().get(i));
-                }
+
+
+    private void initData() {
+
+        AdapterCategories adapter = new AdapterCategories(getActiviy(), selectedCategories, AdapterCategories.CLICK, new DataCallBack() {
+            @Override
+            public void Result(Object obj, String type, Object otherData) {
+                CategoryModel categoryModel = (CategoryModel) obj;
+
+
+
             }
-        }
-        return selected;
+        });
+        categoriesRV.setAdapter(adapter);
+
+
     }
+
+
 }

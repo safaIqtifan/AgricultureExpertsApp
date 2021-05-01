@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp">
+
+        <com.github.siyamed.shapeimageview.RoundedImageView
+            android:id="@+id/categoryBgImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:siBorderColor="@color/transparent"
+            app:siSquare="true" />
+
+        <ImageView
+            android:id="@+id/categoryImg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="35dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/directory_user"
+            app:layout_constraintBottom_toBottomOf="@id/categoryBgImg"
+            app:layout_constraintEnd_toEndOf="@id/categoryBgImg"
+            app:layout_constraintStart_toStartOf="@id/categoryBgImg"
+            app:layout_constraintTop_toTopOf="@id/categoryBgImg" />
+
+        <TextView
+            android:id="@+id/textImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/green_house"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/categoryBgImg" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

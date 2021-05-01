@@ -3,5 +3,5 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners android:radius="30dp"/>
-    <solid android:color="#32707070"/>
+    <solid android:color="@color/create_farm_bg"/>
 </shape>

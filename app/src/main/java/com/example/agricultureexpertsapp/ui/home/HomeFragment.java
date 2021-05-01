@@ -35,7 +35,6 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
 
-        final TextView textView = root.findViewById(R.id.text_home);
         profileImg = root.findViewById(R.id.profile_img);
 
         profileImg.setOnClickListener(new View.OnClickListener() {
@@ -47,14 +46,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         return root;
     }
 

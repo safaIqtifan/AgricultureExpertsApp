@@ -21,7 +21,7 @@
         android:id="@+id/navigation_add"
         android:name="com.example.agricultureexpertsapp.ui.add_farm.AddFarmFragment"
         android:label="@string/title_add"
-        tools:layout="@layout/fragment_add_farm" >
+        tools:layout="@layout/fragment_add_farm">
         <action
             android:id="@+id/action_to_createFarm"
             app:destination="@id/navigation_createFarm" />
@@ -43,11 +43,7 @@
         android:id="@+id/navigation_createFarm"
         android:name="com.example.agricultureexpertsapp.ui.add_farm.CreateFarm"
         android:label="Create Farm"
-        tools:layout="@layout/fragment_create_farm" >
-        <action
-            android:id="@+id/action_to_navigation_home"
-            app:destination="@id/navigation_home" />
-    </fragment>
+        tools:layout="@layout/fragment_create_farm2" />
 
 
 </navigation>
