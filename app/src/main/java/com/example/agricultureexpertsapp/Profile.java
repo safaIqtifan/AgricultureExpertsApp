@@ -3,7 +3,6 @@ package com.example.agricultureexpertsapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -12,20 +11,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.example.agricultureexpertsapp.ui.messages.MessagesFragment;
-
-import java.security.Permission;
 
 public class Profile extends BaseActivity {
 
     Button messagebtn;
     ImageView addPost;
-    private AlertDialog.Builder dialogBuilder;
-    private AlertDialog dialog;
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/grad"
-    tools:context=".ui.discution_room.DiscutionRoomFragment">
+    tools:context=".navigation.DiscutionRoomFragment">
 
     <include
         layout="@layout/item_app_bar_main"

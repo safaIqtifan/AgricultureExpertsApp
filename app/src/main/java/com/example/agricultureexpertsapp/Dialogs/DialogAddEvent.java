@@ -1,25 +1,26 @@
-package com.example.agricultureexpertsapp;
+package com.example.agricultureexpertsapp.Dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-public class DialogProfil extends Dialog {
+import com.example.agricultureexpertsapp.R;
+import com.example.agricultureexpertsapp.models.AddEventModel;
+import com.example.agricultureexpertsapp.models.IrrigationSourcesModel;
+import com.example.agricultureexpertsapp.navigation.add_farm.DataCallBack;
 
-    ImageView profilImg;
-    EditText description;
+public class DialogAddEvent extends Dialog {
+
+    EditText textEventEt;
     Button cancelBtn, okBtn;
     Activity activity;
 
-    public DialogProfil(Context context, int message, int okStr, int cancelStr, final Click okCall, final Click cancelCall) {
+    public DialogAddEvent(Context context, final DataCallBack okCall) {
         super(context);
 
         activity = (Activity) context;
@@ -27,30 +28,26 @@ public class DialogProfil extends Dialog {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         requestWindowFeature(Window.FEATURE_NO_TITLE); //before
 
-        setContentView(R.layout.popup_profile);
-        setCancelable(false);
+        setContentView(R.layout.popup_add_event);
+//        setCancelable(false);
 //        setTitle(title);
 
-        profilImg = findViewById(R.id.postImg);
-        description = findViewById(R.id.description);
-        cancelBtn = findViewById(R.id.cancelBtn);
-        okBtn = findViewById(R.id.okBtn);
+        textEventEt = findViewById(R.id.text_event);
 
-        //messageTxt.setText(message);
-
-        if (okStr != 0)
-            okBtn.setText(okStr);
-        if (cancelStr != 0)
-            cancelBtn.setText(cancelStr);
 
         okBtn.setOnClickListener(view -> {
-            if (okCall != null)
-                okCall.click();
+
+            String textEventStr = textEventEt.getText().toString();
+
             dismiss();
+            if (okCall != null) {
+
+                okCall.Result(textEventStr, "", null);
+                AddEventModel dialogAddEvent = new AddEventModel();
+            }
         });
         cancelBtn.setOnClickListener(view -> {
-            if (cancelCall != null)
-                cancelCall.click();
+
             dismiss();
         });
 

@@ -10,7 +10,10 @@ public class CategoryModel implements Serializable {
     public String link;
     public boolean isChecked = false;
 
-    public CategoryModel(int id,String name, String link) {
+    public CategoryModel() {
+    }
+
+    public CategoryModel(int id, String name, String link) {
         this.id = id;
         this.name = name;
         this.link = link;

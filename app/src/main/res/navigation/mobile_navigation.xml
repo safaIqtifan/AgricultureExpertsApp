@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.agricultureexpertsapp.ui.home.HomeFragment"
+        android:name="com.example.agricultureexpertsapp.navigation.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_discussion"
-        android:name="com.example.agricultureexpertsapp.ui.discution_room.DiscutionRoomFragment"
+        android:name="com.example.agricultureexpertsapp.navigation.DiscutionRoomFragment"
         android:label="@string/title_discussion"
         tools:layout="@layout/fragment_discution_room" />
 
     <fragment
         android:id="@+id/navigation_add"
-        android:name="com.example.agricultureexpertsapp.ui.add_farm.AddFarmFragment"
+        android:name="com.example.agricultureexpertsapp.navigation.add_farm.AddFarmFragment"
         android:label="@string/title_add"
         tools:layout="@layout/fragment_add_farm">
         <action
@@ -29,19 +29,19 @@
 
     <fragment
         android:id="@+id/navigation_messages"
-        android:name="com.example.agricultureexpertsapp.ui.messages.MessagesFragment"
+        android:name="com.example.agricultureexpertsapp.navigation.MessagesFragment"
         android:label="@string/title_messages"
         tools:layout="@layout/fragment_messages" />
 
     <fragment
         android:id="@+id/navigation_calendar"
-        android:name="com.example.agricultureexpertsapp.ui.calendar.CalendarFragment"
+        android:name="com.example.agricultureexpertsapp.navigation.CalendarFragment"
         android:label="@string/title_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/navigation_createFarm"
-        android:name="com.example.agricultureexpertsapp.ui.add_farm.CreateFarm"
+        android:name="com.example.agricultureexpertsapp.navigation.add_farm.CreateFarmFragment"
         android:label="Create Farm"
         tools:layout="@layout/fragment_create_farm2" />
 

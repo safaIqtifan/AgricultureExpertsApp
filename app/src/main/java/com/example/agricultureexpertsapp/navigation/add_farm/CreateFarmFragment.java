@@ -1,7 +1,7 @@
-package com.example.agricultureexpertsapp.ui.add_farm;
+package com.example.agricultureexpertsapp.navigation.add_farm;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,34 +17,43 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.agricultureexpertsapp.Adapter.AdapterCategories;
+import com.example.agricultureexpertsapp.Adapter.AdapterSelectedCategory;
 import com.example.agricultureexpertsapp.Constants;
-import com.example.agricultureexpertsapp.MoreDetails;
+import com.example.agricultureexpertsapp.GlobalHelper;
 import com.example.agricultureexpertsapp.R;
 import com.example.agricultureexpertsapp.models.CategoryModel;
 import com.example.agricultureexpertsapp.models.FarmModel;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
-public class CreateFarm extends Fragment {
+public class CreateFarmFragment extends Fragment {
 
     TextView title;
     RecyclerView selectedRV, categoriesRV;
     Button add;
-    private AddFarmViewModel addFarmViewModel;
     public ArrayList<CategoryModel> selectedCategories = new ArrayList<>();
     public ArrayList<CategoryModel> categoriesList;
 
     FirebaseFirestore fireStoreDB;
     FirebaseAuth auth;
-    //    DocumentReference farmsCol;
+    StorageReference storageRef;
+
     FarmModel farmModel;
+    Uri farmPhotoUri;
     String farmId;
+    String userId;
     int catIndex = 0;
     ViewGroup viewGroup;
 
@@ -52,11 +61,8 @@ public class CreateFarm extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
         viewGroup = container;
 
-        addFarmViewModel =
-                new ViewModelProvider(this).get(AddFarmViewModel.class);
         View root = inflater.inflate(R.layout.fragment_create_farm2, container, false);
 
         title = root.findViewById(R.id.title);
@@ -66,6 +72,7 @@ public class CreateFarm extends Fragment {
 
         auth = FirebaseAuth.getInstance();
         fireStoreDB = FirebaseFirestore.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
 //        farmsCol = fireStoreDB.collection(Constants.FB_FARMS);
 
         categoriesList = new ArrayList<>();
@@ -82,6 +89,7 @@ public class CreateFarm extends Fragment {
 
         Bundle bundle = getArguments();
         farmModel = (FarmModel) bundle.getSerializable(Constants.KEY_FARM_MODEL);
+        farmPhotoUri = Uri.parse(bundle.getString(Constants.KEY_PHOTO_URI));
 
         initData();
         FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
@@ -106,19 +114,11 @@ public class CreateFarm extends Fragment {
                 return;
             }
 
-            farmId = auth.getUid();
-            fireStoreDB.collection(Constants.FB_FARMS).document(farmId).set(farmModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
+            userId = auth.getUid();
+            farmModel.user_id = userId;
 
-                        sendCategoriesToFirebase();
-
-                    } else {
-                        Toast.makeText(getActivity(), getString(R.string.fail_add_farm), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            GlobalHelper.showProgressDialog(getActivity(), getString(R.string.please_wait_sending));
+            uploadPhoto(farmPhotoUri);
 
         });
 
@@ -144,12 +144,32 @@ public class CreateFarm extends Fragment {
 
     }
 
+    private void sendFarmToFirebase() {
+        farmId = fireStoreDB.collection(Constants.FB_FARMS).document().getId(); // this is auto genrat
+
+        fireStoreDB.collection(Constants.FB_FARMS).document(farmId).set(farmModel,
+                SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    sendCategoriesToFirebase();
+
+                } else {
+                    GlobalHelper.hideProgressDialog();
+                    Toast.makeText(getActivity(), getString(R.string.fail_add_farm), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private void sendCategoriesToFirebase() {
+
         if (catIndex < selectedCategories.size()) {
             CategoryModel categoryModel = selectedCategories.get(catIndex);
 
             fireStoreDB.collection(Constants.FB_FARMS).document(farmId).collection(Constants.FB_CATEGORIES)
-                    .document(String.valueOf(categoryModel.id)).set(categoryModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    .document(String.valueOf(categoryModel.id)).set(categoryModel, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -161,8 +181,9 @@ public class CreateFarm extends Fragment {
                 }
             });
         } else {
+            GlobalHelper.hideProgressDialog();
             Toast.makeText(getActivity(), getString(R.string.succes_add_farm), Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(viewGroup).popBackStack(R.id.navigation_home,true);
+            Navigation.findNavController(viewGroup).popBackStack(R.id.navigation_home, false);
 
         }
     }
@@ -172,4 +193,32 @@ public class CreateFarm extends Fragment {
         selectedRV.setAdapter(adapter);
     }
 
+    private void uploadPhoto(Uri photoUri) {
+//        Bitmap bitmap = ((BitmapDrawable) farmPhoto.getDrawable()).getBitmap();
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//        byte[] data = baos.toByteArray();
+
+        StorageReference imgRef = storageRef.child(Constants.FS_FARMS_IMAGES + "/" + UUID.randomUUID().toString());
+
+        UploadTask uploadTask = imgRef.putFile(photoUri);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                exception.printStackTrace();
+                GlobalHelper.hideProgressDialog();
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(taskSnapshot -> {
+
+            imgRef.getDownloadUrl().addOnCompleteListener(task -> {
+
+                farmModel.photo = task.getResult().toString();
+                System.out.println("Log uploaded url " + farmModel.photo);
+                sendFarmToFirebase();
+            });
+
+
+        });
+    }
 }

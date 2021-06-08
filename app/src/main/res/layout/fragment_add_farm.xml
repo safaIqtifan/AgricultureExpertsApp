@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@drawable/grad"
     android:orientation="vertical"
-    tools:context=".ui.add_farm.AddFarmFragment">
+    tools:context=".navigation.add_farm.AddFarmFragment">
 
     <include
         android:id="@+id/include2"
@@ -18,136 +19,146 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container2"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="30dp"
-        android:background="@drawable/consbackground"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.01" />
-
-        <ImageView
-            android:id="@+id/imageView4"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container2"
             android:layout_width="match_parent"
-            android:layout_height="207dp"
-            android:background="@drawable/line_background"
-            android:scaleType="center"
-            android:src="@drawable/directory_camera"
-            app:layout_constraintBottom_toTopOf="@+id/line1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+            android:layout_height="match_parent"
+            android:layout_margin="30dp"
+            android:background="@drawable/consbackground"
+            android:padding="20dp">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.36" />
-
-        <LinearLayout
-            android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline2">
-
-            <EditText
-                android:id="@+id/farmName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/box1_white"
-                android:hint="Farm Name"
-                android:paddingStart="20dp"
-                android:textColorHint="@color/gry"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/farmArea"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/box1_white"
-                android:hint="Farm Area"
-                android:paddingStart="20dp"
-                android:textColorHint="@color/gry"
-                android:textSize="18dp" />
-
-
-            <EditText
-                android:id="@+id/farmLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/box1_white"
-                android:hint="Farm Location"
-                android:paddingStart="20dp"
-                android:textColorHint="@color/gry"
-                android:textSize="18dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/TextInputStyle"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp">
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.01" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/ownerFarmType"
+            <ImageView
+                android:id="@+id/farm_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/line_background"
+                android:scaleType="center"
+                android:src="@drawable/directory_camera"
+                app:layout_constraintBottom_toTopOf="@+id/line1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.33" />
+
+            <LinearLayout
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline2">
+
+                <EditText
+                    android:id="@+id/farmName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/box1_white"
+                    android:hint="Farm Name"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:textColorHint="@color/gry"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/farmArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/box1_white"
+                    android:hint="Farm Area"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="20dp"
+                    android:textColorHint="@color/gry"
+                    android:textSize="18sp" />
+
+
+                <EditText
+                    android:id="@+id/farmLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/box1_white"
+                    android:hint="Farm Location"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:textColorHint="@color/gry"
+                    android:textSize="18sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="none"
-                    android:text="Owner Farm type"
-                    android:textColor="@color/light_black" />
+                    android:layout_marginTop="20dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:id="@+id/ownerFarmType"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="none"
+                        android:text="Owner Farm type"
+                        android:textColor="@color/light_black" />
 
-            <EditText
-                android:id="@+id/idNumber"
-                android:layout_width="match_parent"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <EditText
+                    android:id="@+id/idNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/box1_white"
+                    android:hint="Personal ID number"
+                    android:inputType="number"
+                    android:paddingStart="20dp"
+                    android:textColorHint="@color/gry"
+                    android:textSize="18sp" />
+
+
+                <EditText
+                    android:id="@+id/mobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/box1_white"
+                    android:hint="Mobile number"
+                    android:inputType="phone"
+                    android:paddingStart="20dp"
+                    android:textColorHint="@color/gry"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/box1_white"
-                android:hint="Personal ID number"
-                android:paddingStart="20dp"
-                android:textColorHint="@color/gry"
-                android:textSize="18dp" />
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="1.0" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/mobileNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/box1_white"
-                android:hint="Mobile number"
-                android:paddingStart="20dp"
-                android:textColorHint="@color/gry"
-                android:textSize="18dp" />
-
-
-        </LinearLayout>
-
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.99" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </ScrollView>
 
 </LinearLayout>

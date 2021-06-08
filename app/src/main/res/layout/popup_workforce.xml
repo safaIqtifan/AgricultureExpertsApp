@@ -3,16 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/grad">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:background="@drawable/consbackground"
-        android:padding="30dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Workforce"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textColor="@color/light_black"/>
 
         <View
@@ -33,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="30dp"
-            android:background="@color/light_black2"/>
+            android:background="@color/gry"/>
 
         <EditText
             android:id="@+id/worker_iD_number"
@@ -42,44 +40,44 @@
             android:ems="10"
             android:layout_margin="10dp"
             android:paddingStart="20dp"
-            android:background="@drawable/box1_white"
-            android:inputType="textPersonName"
+            android:background="@drawable/box1_white2"
+            android:inputType="number"
             android:hint="Worker ID Number"
             android:textColorHint="@color/gry"/>
 
         <EditText
-            android:id="@+id/wName"
+            android:id="@+id/workerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:layout_margin="10dp"
             android:paddingStart="20dp"
-            android:background="@drawable/box1_white"
+            android:background="@drawable/box1_white2"
             android:inputType="textPersonName"
             android:hint="Name"
             android:textColorHint="@color/gry" />
 
         <EditText
-            android:id="@+id/wAdress"
+            android:id="@+id/workerAdress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:layout_margin="10dp"
             android:paddingStart="20dp"
-            android:background="@drawable/box1_white"
+            android:background="@drawable/box1_white2"
             android:inputType="textPersonName"
             android:hint="Adress"
             android:textColorHint="@color/gry" />
 
         <EditText
-            android:id="@+id/wMobile_number"
+            android:id="@+id/workerMobile_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:layout_margin="10dp"
             android:paddingStart="20dp"
-            android:background="@drawable/box1_white"
-            android:inputType="textPersonName"
+            android:background="@drawable/box1_white2"
+            android:inputType="number"
             android:hint="Mobile Number "
             android:textColorHint="@color/gry" />
 
@@ -87,27 +85,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Gender"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginTop="20dp"
-            android:textColor="@color/light_black"/>
+            android:textColor="@color/light_black2"/>
 
         <RadioGroup
+            android:id="@+id/gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp">
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/male"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="RadioButton" />
+                android:text="Male " />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/female"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="RadioButton" />
+                android:text="Female" />
 
         </RadioGroup>
 

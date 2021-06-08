@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="safa Iqtifan"
             android:textColor="@color/light_black"
-            android:textSize="24dp"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_image" />
@@ -134,7 +134,7 @@
             android:background="@color/bluebtnColor"
             android:text="FOLLOW"
             android:textColor="@color/light_black"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <android.widget.Button
             android:id="@+id/messagebtn"
@@ -145,7 +145,7 @@
             android:background="@color/white"
             android:text="@string/title_messages"
             android:textColor="@color/light_black"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

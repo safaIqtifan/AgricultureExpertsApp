@@ -171,6 +171,7 @@ public class SignupActivity extends BaseActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 // ...
+                e.printStackTrace();
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }

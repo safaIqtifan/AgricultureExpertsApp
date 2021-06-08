@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp">
+        android:layout_height="wrap_content">
 
         <com.github.siyamed.shapeimageview.RoundedImageView
             android:id="@+id/categoryBgImg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:src="@drawable/unselected_shap"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:siBorderColor="@color/transparent"
             app:siSquare="true" />
@@ -25,8 +29,7 @@
             android:id="@+id/categoryImg"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="35dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:src="@drawable/directory_user"
             app:layout_constraintBottom_toBottomOf="@id/categoryBgImg"
             app:layout_constraintEnd_toEndOf="@id/categoryBgImg"
@@ -43,6 +46,7 @@
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/categoryBgImg" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

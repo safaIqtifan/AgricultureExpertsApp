@@ -59,5 +59,15 @@
     <string name="fail_add_farm">Fail add farm</string>
     <string name="fail_category">Fail add category</string>
     <string name="succes_add_farm">Success add farm</string>
+    <string name="please_wait_sending">Please wait sending</string>
+    <string name="meter">m</string>
+    <string name="fail_get_farms_list">Fail to get farms list</string>
+    <string name="please_wait_loading">Please wait loading</string>
+    <string name="fail_get_farm_categories">Fail get farm categories</string>
+    <string name="ground_water">Ground Water</string>
+    <string name="well">Well</string>
+    <string name="tank">Tank</string>
+    <string name="success_add">Success Add</string>
+    <string name="fail_add">Fail Add</string>
 
 </resources>

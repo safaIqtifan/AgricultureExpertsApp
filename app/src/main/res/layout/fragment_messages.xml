@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/grad"
-    tools:context=".ui.messages.MessagesFragment">
+    tools:context=".navigation.MessagesFragment">
 
     <include
         android:id="@+id/include"

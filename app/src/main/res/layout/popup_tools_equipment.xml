@@ -3,15 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/grad">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:background="@drawable/consbackground"
         android:orientation="vertical"
         android:padding="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,21 +24,21 @@
             android:layout_height="wrap_content"
             android:text="Tools &amp; equipment"
             android:textColor="@color/light_black"
-            android:textSize="24dp" />
+            android:textSize="24sp" />
 
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="30dp"
-            android:background="@color/light_black2" />
+            android:background="@color/gry" />
 
         <EditText
             android:id="@+id/machine_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/box1_white"
+            android:background="@drawable/box1_white2"
             android:ems="10"
             android:hint="Machine Type"
             android:inputType="textPersonName"
@@ -52,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/box1_white"
+            android:background="@drawable/box1_white2"
             android:ems="10"
             android:hint="Property Type"
             android:inputType="textPersonName"
@@ -64,10 +62,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/box1_white"
+            android:background="@drawable/box1_white2"
             android:ems="10"
             android:hint="Machines Number"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:paddingStart="20dp"
             android:textColorHint="@color/gry" />
 
