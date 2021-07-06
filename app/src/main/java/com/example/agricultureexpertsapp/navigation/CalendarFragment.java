@@ -72,6 +72,7 @@ public class CalendarFragment extends Fragment {
         TextView title = root.findViewById(R.id.title);
         monthNameTv = root.findViewById(R.id.monthNameTv);
         title.setText(R.string.title_calendar);
+
         Button okBtn = root.findViewById(R.id.okBtn);
         CalendarView calendarView = root.findViewById(R.id.calendarView);
         Button cancelBtn = root.findViewById(R.id.cancelBtn);

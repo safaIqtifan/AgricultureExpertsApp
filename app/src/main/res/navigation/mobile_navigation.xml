@@ -29,9 +29,9 @@
 
     <fragment
         android:id="@+id/navigation_messages"
-        android:name="com.example.agricultureexpertsapp.navigation.MessagesFragment"
+        android:name="com.example.agricultureexpertsapp.navigation.SettingsFragment"
         android:label="@string/title_messages"
-        tools:layout="@layout/fragment_messages" />
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/navigation_calendar"

@@ -28,4 +28,7 @@ public class Constants {
 //    public static final int IRRIGATION_WELL = 2;
 //    public static final int IRRIGATION_TANK = 3;
 
+    public static String POST = "Post";
+    public static String POST_IMAGES = "PostsImages";
+
 }

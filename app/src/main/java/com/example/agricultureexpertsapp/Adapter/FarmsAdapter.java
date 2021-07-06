@@ -34,7 +34,7 @@ public class FarmsAdapter extends RecyclerView.Adapter<FarmsAdapter.userSelected
     public userSelectedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        userSelectedViewHolder viewHolder = new userSelectedViewHolder(inflater.inflate(R.layout.item_farm, parent, false));
+        userSelectedViewHolder viewHolder = new userSelectedViewHolder(inflater.inflate(R.layout.item_image, parent, false));
 
         return viewHolder;
     }
@@ -45,9 +45,6 @@ public class FarmsAdapter extends RecyclerView.Adapter<FarmsAdapter.userSelected
         FarmModel farmModel = list.get(position);
 
         holder.farmNameTv.setText(farmModel.name);
-        holder.mobileNumberTv.setText(farmModel.mobile);
-        holder.areaTv.setText(farmModel.area + " " + activity.getString(R.string.meter));
-
         Glide.with(activity).asBitmap().load(farmModel.photo).placeholder(R.drawable.icon_camera).into(holder.farmImg);
 
     }
@@ -61,15 +58,11 @@ public class FarmsAdapter extends RecyclerView.Adapter<FarmsAdapter.userSelected
 
         ImageView farmImg;
         TextView farmNameTv;
-        TextView mobileNumberTv;
-        TextView areaTv;
 
         public userSelectedViewHolder(@NonNull View itemView) {
             super(itemView);
-            farmImg = itemView.findViewById(R.id.farmImg);
-            farmNameTv = itemView.findViewById(R.id.farmNameTv);
-            mobileNumberTv = itemView.findViewById(R.id.mobileNumberTv);
-            areaTv = itemView.findViewById(R.id.areaTv);
+            farmImg = itemView.findViewById(R.id.post_photo);
+            farmNameTv = itemView.findViewById(R.id.describctionEd);
 
             itemView.setOnClickListener(v -> {
 

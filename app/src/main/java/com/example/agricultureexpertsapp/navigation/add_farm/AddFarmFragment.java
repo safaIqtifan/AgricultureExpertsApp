@@ -29,6 +29,7 @@ import androidx.navigation.Navigation;
 import com.example.agricultureexpertsapp.Constants;
 import com.example.agricultureexpertsapp.R;
 import com.example.agricultureexpertsapp.models.FarmModel;
+import com.google.firebase.firestore.FieldValue;
 
 public class AddFarmFragment extends Fragment {
 
@@ -157,6 +158,7 @@ public class AddFarmFragment extends Fragment {
 
         FarmModel farmModel = new FarmModel(farmNameStr, mobileStr, locationStr, Double.parseDouble(areaStr),
                 Integer.parseInt(nationalIdStr), selectedOwner);
+
         bundle.putSerializable(Constants.KEY_FARM_MODEL, farmModel);
         bundle.putString(Constants.KEY_PHOTO_URI, farmPhotoUri.toString());
 

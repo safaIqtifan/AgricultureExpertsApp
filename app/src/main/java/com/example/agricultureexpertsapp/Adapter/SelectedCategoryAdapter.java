@@ -14,11 +14,11 @@ import com.example.agricultureexpertsapp.models.CategoryModel;
 
 import java.util.ArrayList;
 
-public class AdapterSelectedCategory extends RecyclerView.Adapter<AdapterSelectedCategory.MyViewHolder> {
+public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCategoryAdapter.MyViewHolder> {
 
     ArrayList<CategoryModel> myArray;
 
-    public AdapterSelectedCategory(ArrayList<CategoryModel> myArray) {
+    public SelectedCategoryAdapter(ArrayList<CategoryModel> myArray) {
         this.myArray = myArray;
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,11 +14,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.agricultureexpertsapp.Adapter.FarmsAdapter;
 import com.example.agricultureexpertsapp.Constants;
 import com.example.agricultureexpertsapp.GlobalHelper;
+import com.example.agricultureexpertsapp.HomePageActivity;
+import com.example.agricultureexpertsapp.MessagesActivity;
 import com.example.agricultureexpertsapp.MoreDetails;
+import com.example.agricultureexpertsapp.NotificationDisplay;
 import com.example.agricultureexpertsapp.Profile;
 import com.example.agricultureexpertsapp.R;
 import com.example.agricultureexpertsapp.models.FarmModel;
@@ -25,6 +30,7 @@ import com.example.agricultureexpertsapp.navigation.add_farm.DataCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -33,8 +39,12 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    ProgressBar loadingLY;
     ImageView profileImg;
     RecyclerView farmsRV;
+    SwipeRefreshLayout swipeRefreshLY;
+    ImageView notificationImg;
+    ImageView messages;
 
     FirebaseFirestore fireStoreDB;
     List<FarmModel> farmModelList;
@@ -44,11 +54,31 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        loadingLY = root.findViewById(R.id.loadingLY);
         profileImg = root.findViewById(R.id.profile_img);
         farmsRV = root.findViewById(R.id.farmsRV);
+        swipeRefreshLY = root.findViewById(R.id.swipeToRefreshLY);
+        notificationImg = root.findViewById(R.id.notification_img);
+        messages = root.findViewById(R.id.messages_img);
 
         farmsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         fireStoreDB = FirebaseFirestore.getInstance();
+
+        notificationImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), NotificationDisplay.class));
+
+            }
+        });
+
+        messages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MessagesActivity.class));
+
+            }
+        });
 
         profileImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,24 +90,39 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        swipeRefreshLY.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getFarmsFromFirebase(false);
+            }
+        });
+
+        getFarmsFromFirebase(true);
+
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
-        getFarmsFromFirebase();
-
         return root;
     }
 
-    private void getFarmsFromFirebase() {
 
-        GlobalHelper.showProgressDialog(getActivity(), getString(R.string.please_wait_loading));
-        fireStoreDB.collection(Constants.FB_FARMS).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    private void getFarmsFromFirebase(boolean showLoading) {
+
+        if (showLoading) {
+            loadingLY.setVisibility(View.VISIBLE);
+            swipeRefreshLY.setVisibility(View.GONE);
+        }
+
+//        GlobalHelper.showProgressDialog(getActivity(), getString(R.string.please_wait_loading));
+        fireStoreDB.collection(Constants.FB_FARMS).orderBy("created_at", Query.Direction.DESCENDING)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                GlobalHelper.hideProgressDialog();
+                loadingLY.setVisibility(View.GONE);
+                swipeRefreshLY.setRefreshing(false);
 
                 if (task.isSuccessful()) {
+                    swipeRefreshLY.setVisibility(View.VISIBLE);
+
                     farmModelList = new ArrayList<>();
 
                     if (task.getResult() != null) {
@@ -86,6 +131,9 @@ public class HomeFragment extends Fragment {
                             farmModel.farm_id = queryDocumentSnapshot.getId();
                             farmModelList.add(farmModel);
                         }
+
+                        // you can store farm to local database
+
 
                         initAdapter();
                     }

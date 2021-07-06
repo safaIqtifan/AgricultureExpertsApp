@@ -16,7 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AgricultureExpertsApp">
-
+        <activity android:name=".MessagesActivity"></activity>
+        <activity android:name=".NotificationDisplay" />
+        <activity android:name=".FavoritesActivity" />
+        <activity android:name=".AddPostActivity" />
         <activity android:name=".MoreDetails" />
         <activity android:name=".Profile" />
         <activity
@@ -26,12 +29,11 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".OnboardingActivity" />
         <activity android:name=".MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

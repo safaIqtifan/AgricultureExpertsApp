@@ -1,6 +1,9 @@
 package com.example.agricultureexpertsapp.models;
 
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class FarmModel implements Serializable {
 
@@ -13,6 +16,8 @@ public class FarmModel implements Serializable {
     public int personal_id;
     public String owner_type;
     public String photo;
+    @ServerTimestamp
+    public Date created_at;
 //    public List<CategoryModel> Categories;
 
 

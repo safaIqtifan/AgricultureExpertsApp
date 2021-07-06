@@ -70,4 +70,18 @@
     <string name="success_add">Success Add</string>
     <string name="fail_add">Fail Add</string>
 
+
+    <string name="invalid_input">Invalid Input</string>
+    <string name="please_add_photo">Please add photo</string>
+    <string name="success_add_post">Succes add post</string>
+    <string name="fail_add_post">Fail add post</string>
+    <string name="font_size">Font Size</string>
+    <string name="small">Small</string>
+    <string name="large">Large</string>
+    <string name="normal">Normal</string>
+    <string name="save">Save</string>
+    <string name="notifications">Notifications</string>
+    <string name="fail_get_data">Fail to get data</string>
+    <string name="favorite">Favorites</string>
+
 </resources>

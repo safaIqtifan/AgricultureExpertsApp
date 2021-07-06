@@ -15,7 +15,7 @@ import com.example.agricultureexpertsapp.Dialogs.DialogIrrigationSourcess;
 import com.example.agricultureexpertsapp.Dialogs.DialogToolsEquipment;
 import com.example.agricultureexpertsapp.Dialogs.DialogWorkforce;
 import com.example.agricultureexpertsapp.models.FarmModel;
-import com.example.agricultureexpertsapp.Adapter.AdapterCategories;
+import com.example.agricultureexpertsapp.Adapter.CategoriesAdapter;
 import com.example.agricultureexpertsapp.models.CategoryModel;
 import com.example.agricultureexpertsapp.models.IrrigationSourcesModel;
 import com.example.agricultureexpertsapp.navigation.add_farm.DataCallBack;
@@ -48,7 +48,7 @@ public class MoreDetails extends BaseActivity {
         setContentView(R.layout.activity_more_details);
 
         title = findViewById(R.id.title);
-        farmImg = findViewById(R.id.farmImg);
+        farmImg = findViewById(R.id.post_photo);
         farmNameTv = findViewById(R.id.farmNameTv);
         farmAreaTv = findViewById(R.id.farmAreaTv);
         farmLocationTv = findViewById(R.id.farmLocationTv);
@@ -56,14 +56,12 @@ public class MoreDetails extends BaseActivity {
         mobileNumberTv = findViewById(R.id.mobileNumberTv);
         categoriesRv = findViewById(R.id.categoriesRv);
 
+
         categoriesRv.setLayoutManager(new GridLayoutManager(getActiviy(), 3, GridLayoutManager.VERTICAL, false));
-
         fireStoreDB = FirebaseFirestore.getInstance();
-
         farmModel = (FarmModel) getIntent().getSerializableExtra(Constants.KEY_FARM_MODEL);
 
-
-        title.setText(farmModel.name);
+        title.setText("More Details");
 
         getFarmCategoriesFirebase();
 
@@ -76,7 +74,8 @@ public class MoreDetails extends BaseActivity {
         farmLocationTv.setText(farmModel.location);
         mobileNumberTv.setText(farmModel.mobile);
 
-        Glide.with(getActiviy()).asBitmap().load(farmModel.photo).placeholder(R.drawable.icon_camera).into(farmImg);
+        if (farmModel.photo != null && !farmModel.photo.isEmpty())
+            Glide.with(getActiviy()).asBitmap().load(farmModel.photo).placeholder(R.drawable.icon_camera).into(farmImg);
 
         String ownerStr = getString(farmModel.owner_type
                 .equals(Constants.OWNER_COMPANY) ? R.string.company : R.string.person);
@@ -91,33 +90,33 @@ public class MoreDetails extends BaseActivity {
                 .collection(Constants.FB_CATEGORIES).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                GlobalHelper.hideProgressDialog();
-                if (task.isSuccessful()) {
-                    selectedCategories = new ArrayList<>();
-                    if (task.getResult() != null) {
-                        for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        GlobalHelper.hideProgressDialog();
+                        if (task.isSuccessful()) {
+                            selectedCategories = new ArrayList<>();
+                            if (task.getResult() != null) {
+                                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
 
-                            CategoryModel categoryModel = queryDocumentSnapshot.toObject(CategoryModel.class);
-                            categoryModel.id = Integer.parseInt(queryDocumentSnapshot.getId());
-                            selectedCategories.add(categoryModel);
+                                    CategoryModel categoryModel = queryDocumentSnapshot.toObject(CategoryModel.class);
+                                    categoryModel.id = Integer.parseInt(queryDocumentSnapshot.getId());
+                                    selectedCategories.add(categoryModel);
+                                }
+
+                                initData();
+                            }
+
+                        } else {
+                            Toast.makeText(getActiviy(), getString(R.string.fail_get_farm_categories), Toast.LENGTH_SHORT).show();
                         }
-
-                        initData();
                     }
-
-                } else {
-                    Toast.makeText(getActiviy(), getString(R.string.fail_get_farm_categories), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                });
     }
 
 
     private void initAdapter() {
 
-        AdapterCategories adapter = new AdapterCategories(getActiviy(), selectedCategories, AdapterCategories.CLICK, new DataCallBack() {
+        CategoriesAdapter adapter = new CategoriesAdapter(getActiviy(), selectedCategories, CategoriesAdapter.CLICK, new DataCallBack() {
 
             @Override
             public void Result(Object obj, String type, Object otherData) {

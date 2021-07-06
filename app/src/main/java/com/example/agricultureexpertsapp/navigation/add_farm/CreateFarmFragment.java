@@ -12,13 +12,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.agricultureexpertsapp.Adapter.AdapterCategories;
-import com.example.agricultureexpertsapp.Adapter.AdapterSelectedCategory;
+import com.example.agricultureexpertsapp.Adapter.CategoriesAdapter;
+import com.example.agricultureexpertsapp.Adapter.SelectedCategoryAdapter;
 import com.example.agricultureexpertsapp.Constants;
 import com.example.agricultureexpertsapp.GlobalHelper;
 import com.example.agricultureexpertsapp.R;
@@ -28,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,6 +36,8 @@ import com.google.firebase.storage.UploadTask;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CreateFarmFragment extends Fragment {
@@ -128,7 +130,7 @@ public class CreateFarmFragment extends Fragment {
 
     private void initData() {
 
-        AdapterCategories adapter = new AdapterCategories(getActivity(), categoriesList, AdapterCategories.SELECT, new DataCallBack() {
+        CategoriesAdapter adapter = new CategoriesAdapter(getActivity(), categoriesList, CategoriesAdapter.SELECT, new DataCallBack() {
             @Override
             public void Result(Object obj, String type, Object otherData) {
                 CategoryModel categoryModel = (CategoryModel) obj;
@@ -147,8 +149,19 @@ public class CreateFarmFragment extends Fragment {
     private void sendFarmToFirebase() {
         farmId = fireStoreDB.collection(Constants.FB_FARMS).document().getId(); // this is auto genrat
 
-        fireStoreDB.collection(Constants.FB_FARMS).document(farmId).set(farmModel,
-                SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        Map<String, Object> farmModelMap = new HashMap<>();
+        farmModelMap.put("farm_id", farmId);
+        farmModelMap.put("user_id", farmModel.user_id);
+        farmModelMap.put("name", farmModel.name);
+        farmModelMap.put("mobile", farmModel.mobile);
+        farmModelMap.put("location", farmModel.location);
+        farmModelMap.put("area", farmModel.area);
+        farmModelMap.put("personal_id", farmModel.personal_id);
+        farmModelMap.put("owner_type", farmModel.owner_type);
+        farmModelMap.put("photo", farmModel.photo);
+        farmModelMap.put("created_at", FieldValue.serverTimestamp());
+
+        fireStoreDB.collection(Constants.FB_FARMS).document(farmId).set(farmModelMap, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -189,7 +202,7 @@ public class CreateFarmFragment extends Fragment {
     }
 
     private void initSelectedAdapter() {
-        AdapterSelectedCategory adapter = new AdapterSelectedCategory(selectedCategories);
+        SelectedCategoryAdapter adapter = new SelectedCategoryAdapter(selectedCategories);
         selectedRV.setAdapter(adapter);
     }
 

@@ -18,7 +18,7 @@ import com.example.agricultureexpertsapp.navigation.add_farm.DataCallBack;
 
 import java.util.ArrayList;
 
-public class AdapterCategories extends RecyclerView.Adapter<AdapterCategories.userSelectedViewHolder> {
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.userSelectedViewHolder> {
 
     Activity activity;
     ArrayList<CategoryModel> list;
@@ -27,7 +27,7 @@ public class AdapterCategories extends RecyclerView.Adapter<AdapterCategories.us
 
     public static int NO_CLICK = 0,SELECT = 1,CLICK = 2;
 
-    public AdapterCategories(Activity activity, ArrayList<CategoryModel> categoriesList, int clickType, DataCallBack callBack) {
+    public CategoriesAdapter(Activity activity, ArrayList<CategoryModel> categoriesList, int clickType, DataCallBack callBack) {
         this.activity = activity;
         this.list = categoriesList;
         this.clickType = clickType;

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <item-->
+<!--        android:id="@+id/action_favorite"-->
+<!--        android:icon="@drawable/empty_heart"-->
+<!--        app:showAsAction="always"-->
+<!--        android:title="@string/favorite"/>-->
 
     <item
         android:id="@+id/navigation_home"
@@ -16,14 +23,15 @@
         android:icon="@drawable/add"
         android:title="" />
 
-    <item
-        android:id="@+id/navigation_messages"
-        android:icon="@drawable/messages"
-        android:title=""/>
 
     <item
         android:id="@+id/navigation_calendar"
         android:icon="@drawable/calendar"
+        android:title=""/>
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/messages"
         android:title=""/>
 
 </menu>
