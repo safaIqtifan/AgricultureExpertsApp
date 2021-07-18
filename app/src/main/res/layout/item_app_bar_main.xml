@@ -26,7 +26,16 @@
                         android:layout_height="40dp"
                         android:layout_marginTop="5dp"
                         android:padding="8dp"
+                        android:visibility="visible"
                         android:src="@drawable/backbtn" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/message_imag"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"
+                        android:src="@drawable/profile" />
 
                     <TextView
                         android:id="@+id/title"

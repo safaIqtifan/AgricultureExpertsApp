@@ -16,18 +16,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AgricultureExpertsApp">
-        <activity android:name=".MessagesActivity"></activity>
+        <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".UserActivity" />
         <activity android:name=".NotificationDisplay" />
-        <activity android:name=".FavoritesActivity" />
         <activity android:name=".AddPostActivity" />
         <activity android:name=".MoreDetails" />
-        <activity android:name=".Profile" />
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".HomePageActivity"
+            android:configChanges="orientation|navigation|screenSize"
             android:label="@string/title_activity_home_page" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".OnboardingActivity" />
+        <activity android:name=".ChatsActivity" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

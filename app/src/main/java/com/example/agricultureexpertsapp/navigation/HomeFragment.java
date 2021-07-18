@@ -11,19 +11,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.agricultureexpertsapp.Adapter.FarmsAdapter;
 import com.example.agricultureexpertsapp.Constants;
-import com.example.agricultureexpertsapp.GlobalHelper;
-import com.example.agricultureexpertsapp.HomePageActivity;
-import com.example.agricultureexpertsapp.MessagesActivity;
+import com.example.agricultureexpertsapp.UserActivity;
 import com.example.agricultureexpertsapp.MoreDetails;
 import com.example.agricultureexpertsapp.NotificationDisplay;
-import com.example.agricultureexpertsapp.Profile;
+import com.example.agricultureexpertsapp.ProfileActivity;
 import com.example.agricultureexpertsapp.R;
 import com.example.agricultureexpertsapp.models.FarmModel;
 import com.example.agricultureexpertsapp.navigation.add_farm.DataCallBack;
@@ -49,6 +46,7 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore fireStoreDB;
     List<FarmModel> farmModelList;
     FarmModel farmModel;
+    FarmsAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +73,7 @@ public class HomeFragment extends Fragment {
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MessagesActivity.class));
+                startActivity(new Intent(getActivity(), UserActivity.class));
 
             }
         });
@@ -84,7 +82,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getActivity(), Profile.class));
+//                Intent intent = new Intent(getActivity(),ProfileActivity.class);
+
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
 
 //                startActivityForResult(new Intent(getActivity(), Profile.class), 2311);
             }
@@ -117,19 +117,24 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                 loadingLY.setVisibility(View.GONE);
                 swipeRefreshLY.setRefreshing(false);
 
                 if (task.isSuccessful()) {
-                    swipeRefreshLY.setVisibility(View.VISIBLE);
 
+                    swipeRefreshLY.setVisibility(View.VISIBLE);
                     farmModelList = new ArrayList<>();
 
                     if (task.getResult() != null) {
+
                         for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
                             FarmModel farmModel = queryDocumentSnapshot.toObject(FarmModel.class);
                             farmModel.farm_id = queryDocumentSnapshot.getId();
                             farmModelList.add(farmModel);
+
+                            adapter.getLocalFavorite();
+                            adapter.notifyDataSetChanged();
                         }
 
                         // you can store farm to local database
@@ -147,7 +152,7 @@ public class HomeFragment extends Fragment {
 
     private void initAdapter() {
 
-        FarmsAdapter adapter = new FarmsAdapter(getActivity(), farmModelList, new DataCallBack() {
+        adapter = new FarmsAdapter(getActivity(), farmModelList, false, new DataCallBack() {
 
             @Override
             public void Result(Object obj, String type, Object otherData) {
@@ -162,8 +167,6 @@ public class HomeFragment extends Fragment {
         });
 
         farmsRV.setAdapter(adapter);
-
-
     }
 
 //    @Override

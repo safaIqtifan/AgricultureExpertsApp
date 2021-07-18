@@ -161,7 +161,8 @@ public class CreateFarmFragment extends Fragment {
         farmModelMap.put("photo", farmModel.photo);
         farmModelMap.put("created_at", FieldValue.serverTimestamp());
 
-        fireStoreDB.collection(Constants.FB_FARMS).document(farmId).set(farmModelMap, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        fireStoreDB.collection(Constants.FB_FARMS).document(farmId).set(farmModelMap,
+                SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -207,12 +208,9 @@ public class CreateFarmFragment extends Fragment {
     }
 
     private void uploadPhoto(Uri photoUri) {
-//        Bitmap bitmap = ((BitmapDrawable) farmPhoto.getDrawable()).getBitmap();
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//        byte[] data = baos.toByteArray();
 
-        StorageReference imgRef = storageRef.child(Constants.FS_FARMS_IMAGES + "/" + UUID.randomUUID().toString());
+        StorageReference imgRef = storageRef.child(Constants.FS_FARMS_IMAGES + "/"
+                + UUID.randomUUID().toString());
 
         UploadTask uploadTask = imgRef.putFile(photoUri);
         uploadTask.addOnFailureListener(new OnFailureListener() {

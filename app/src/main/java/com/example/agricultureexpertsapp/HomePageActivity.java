@@ -3,27 +3,30 @@ package com.example.agricultureexpertsapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.agricultureexpertsapp.classes.UtilityApp;
+import com.example.agricultureexpertsapp.models.UserModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class HomePageActivity extends BaseActivity {
 
 
     private NavController navController;
+
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +42,22 @@ public class HomePageActivity extends BaseActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        toolbar.setTitle("aaaa");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_discussion, R.id.navigation_add, R.id.navigation_messages)
+                R.id.navigation_home, R.id.navigation_discussion, R.id.navigation_add, R.id.navigation_favorite)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        getMyProfile();
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -63,6 +69,21 @@ public class HomePageActivity extends BaseActivity {
 //        Log.e(TAG, "onBackPressed: - " + navController.g);
 //        Toast.makeText(this, "mmmmmm", Toast.LENGTH_SHORT).show();
     }
+
+    private void getMyProfile() {
+
+        FirebaseFirestore.getInstance().collection(Constants.USER).document(firebaseUser.getUid()).get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            UserModel userModel = task.getResult().toObject(UserModel.class);
+                            UtilityApp.setUserData(userModel);
+                        }
+                    }
+                });
+    }
+
 
     public NavController getNavController() {
         return navController;

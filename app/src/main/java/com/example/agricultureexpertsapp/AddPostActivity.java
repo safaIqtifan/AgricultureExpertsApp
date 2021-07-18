@@ -41,10 +41,9 @@ public class AddPostActivity extends BaseActivity {
     Button add;
     TextView title;
     Uri postPhotoUri;
-    String userId;
     PostsModel postModel;
+
     FirebaseFirestore fireStoreDB;
-    FirebaseAuth auth;
     StorageReference storageRef;
 
     private static final int IMAGE_PICK_CODE = 1000;
@@ -83,7 +82,7 @@ public class AddPostActivity extends BaseActivity {
                         pickImageFromGallery();
                     }
                 } else {
-                    //  pickImageFromGallery();
+                      pickImageFromGallery();
                 }
             }
         });
@@ -136,7 +135,6 @@ public class AddPostActivity extends BaseActivity {
 
     private void uploadPhoto(Uri photoUri) {
 
-
         StorageReference imgRef = storageRef.child("PostsImages" + "/" + UUID.randomUUID().toString());
 
         loadingLY.setVisibility(View.VISIBLE);
@@ -153,7 +151,6 @@ public class AddPostActivity extends BaseActivity {
 
                 postModel.photo = task.getResult().toString();
                 System.out.println("Log uploaded url " + postModel.photo);
-                //checkData();
                 sendPostToFirebase();
             });
 

@@ -27,7 +27,9 @@ public class FarmsAdapter extends RecyclerView.Adapter<FarmsAdapter.userSelected
         this.activity = activity;
         this.list = categoriesList;
         this.dataCallBack = callBack;
+
     }
+
 
     @NonNull
     @Override
@@ -58,17 +60,29 @@ public class FarmsAdapter extends RecyclerView.Adapter<FarmsAdapter.userSelected
 
         ImageView farmImg;
         TextView farmNameTv;
+        ImageView favBtn;
 
         public userSelectedViewHolder(@NonNull View itemView) {
             super(itemView);
             farmImg = itemView.findViewById(R.id.post_photo);
             farmNameTv = itemView.findViewById(R.id.describctionEd);
+            favBtn = itemView.findViewById(R.id.favBtn);
 
             itemView.setOnClickListener(v -> {
 
                 FarmModel farmModel = list.get(getAdapterPosition());
                 dataCallBack.Result(farmModel, "click", "");
 
+            });
+
+            favBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int pos = getAdapterPosition();
+                    FarmModel farmModel = list.get(pos);
+
+                }
             });
         }
     }

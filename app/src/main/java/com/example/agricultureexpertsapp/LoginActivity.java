@@ -1,10 +1,5 @@
 package com.example.agricultureexpertsapp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,14 +45,15 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mEmail = findViewById(R.id.e_mailAddress);
-        mPassword = findViewById(R.id.Password);
+        mEmail = findViewById(R.id.login_e_mailAddress);
+        mPassword = findViewById(R.id.login_Password);
         mLoginBtn = findViewById(R.id.LoginButton);
         progressBar = findViewById(R.id.progressBar);
         mCreateBtn = findViewById(R.id.Createnewnow);
         forgotTextLink = findViewById(R.id.ForgotPassword);
         gmailBtn = findViewById(R.id.gmailBtn);
         facebookBtn = findViewById(R.id.facebookBtn);
+
         fAuth = FirebaseAuth.getInstance();
 
 //        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -81,35 +80,53 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                if (mEmail.getText().toString().isEmpty()){
+                String email = mEmail.getText().toString();
+                String mpassword = mPassword.getText().toString();
+
+                if (email.isEmpty()){
                     mEmail.setError("Email is Missing");
                     return;
                 }
 
-                if (mPassword.getText().toString().isEmpty()){
+                if (mpassword.isEmpty()){
                     mPassword.setError("Password is Missing");
                     return;
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                fAuth.signInWithEmailAndPassword(mEmail.getText().toString(),
-                        mPassword.getText().toString())
-                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-
+                fAuth.signInWithEmailAndPassword(email, mpassword)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
-                            public void onSuccess(AuthResult authResult) {
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
 
-                                startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
-                                finish();
+
+                                    startActivity(new Intent(LoginActivity.this, HomePageActivity.class)
+                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                                    finish();
+
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "fail_to_login", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                        });
 
-                        Toast.makeText(LoginActivity.this, e.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//
+//                            @Override
+//                            public void onSuccess(AuthResult authResult) {
+//
+//                                startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
+//                                finish();
+//                            }
+//                        }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//
+//                        Toast.makeText(LoginActivity.this, e.getMessage(),Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             }
         });
 

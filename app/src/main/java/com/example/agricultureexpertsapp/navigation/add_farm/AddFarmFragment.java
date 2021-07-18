@@ -13,31 +13,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.agricultureexpertsapp.Constants;
 import com.example.agricultureexpertsapp.R;
+import com.example.agricultureexpertsapp.databinding.FragmentAddFarmBinding;
 import com.example.agricultureexpertsapp.models.FarmModel;
-import com.google.firebase.firestore.FieldValue;
 
 public class AddFarmFragment extends Fragment {
 
-    Button next;
-    EditText farmName, area, location, idNumber, mobileNumber;
-    ImageView farmPhoto;
+//    Button next;
+//    EditText farmName, area, location, idNumber, mobileNumber;
+//    ImageView farmPhoto;
+
     Uri farmPhotoUri;
-    AutoCompleteTextView ownerFarmType;
+    //    AutoCompleteTextView ownerFarmType;
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
@@ -46,44 +41,60 @@ public class AddFarmFragment extends Fragment {
     private String[] ownerData;
 
     String selectedOwner = null;
+    ArrayAdapter<String> adapter;
+    FragmentAddFarmBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        binding = FragmentAddFarmBinding.inflate(inflater, container, false);
 
-        View root = inflater.inflate(R.layout.fragment_add_farm, container, false);
+//        View root = inflater.inflate(R.layout.fragment_add_farm, container, false);
 
-        TextView title = root.findViewById(R.id.title);
-        title.setText(R.string.title_create);
 
-        next = root.findViewById(R.id.changebtn);
-        farmName = root.findViewById(R.id.farmName);
-        area = root.findViewById(R.id.farmArea);
-        location = root.findViewById(R.id.farmLocation);
-        idNumber = root.findViewById(R.id.idNumber);
-        mobileNumber = root.findViewById(R.id.mobileNumber);
-        ownerFarmType = root.findViewById(R.id.ownerFarmType);
-        farmPhoto = root.findViewById(R.id.farm_photo);
+        return binding.getRoot();
+    }
 
-        ownerModelList = new String[]{Constants.OWNER_COMPANY, Constants.OWNER_PERSON};
-        ownerData = new String[]{getString(R.string.select_farm_owner), getString(R.string.company), getString(R.string.person)};
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        next.setText("Next");
-        next.setTextColor(Color.parseColor("#1492E6"));
-        next.setOnClickListener(new View.OnClickListener() {
+        binding.include2.title.setText(R.string.title_create);
+
+//        if (savedInstanceState != null) {
+//            return;
+//        }
+
+        initListeners();
+
+        initFarmOwnerType();
+
+
+        binding.farmPhoto.setDrawingCacheEnabled(true);
+        binding.farmPhoto.buildDrawingCache();
+
+
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+    }
+
+    private void initListeners() {
+
+        binding.include2.changebtn.setVisibility(View.VISIBLE);
+        binding.include2.changebtn.setText("Next");
+        binding.include2.changebtn.setTextColor(Color.parseColor("#1492E6"));
+        binding.include2.changebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkData(v);
             }
         });
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, ownerData);
-        AutoCompleteTextView ownerFarmType = root.findViewById(R.id.ownerFarmType);
-        ownerFarmType.setAdapter(adapter);
-
-        ownerFarmType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.ownerFarmType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
@@ -93,7 +104,7 @@ public class AddFarmFragment extends Fragment {
             }
         });
 
-        farmPhoto.setOnClickListener(new View.OnClickListener() {
+        binding.farmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -111,21 +122,32 @@ public class AddFarmFragment extends Fragment {
             }
         });
 
+    }
 
-        farmPhoto.setDrawingCacheEnabled(true);
-        farmPhoto.buildDrawingCache();
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//
+//        System.out.println("Log onViewStateRestored");
+//    }
 
+    private void initFarmOwnerType() {
 
-        return root;
+        ownerModelList = new String[]{Constants.OWNER_COMPANY, Constants.OWNER_PERSON};
+        ownerData = new String[]{getString(R.string.select_farm_owner), getString(R.string.company), getString(R.string.person)};
+
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, ownerData);
+        binding.ownerFarmType.setAdapter(adapter);
+
     }
 
     private void checkData(View view) {
 
-        String farmNameStr = farmName.getText().toString();
-        String areaStr = area.getText().toString();
-        String locationStr = location.getText().toString();
-        String mobileStr = mobileNumber.getText().toString();
-        String nationalIdStr = idNumber.getText().toString();
+        String farmNameStr = binding.farmName.getText().toString();
+        String areaStr = binding.farmArea.getText().toString();
+        String locationStr = binding.farmLocation.getText().toString();
+        String mobileStr = binding.mobileNumber.getText().toString();
+        String nationalIdStr = binding.idNumber.getText().toString();
 
         boolean hasError = false;
         if (farmNameStr.isEmpty()) {
@@ -143,9 +165,9 @@ public class AddFarmFragment extends Fragment {
         if (nationalIdStr.isEmpty()) {
             hasError = true;
         }
-        if (selectedOwner == null) {
-            hasError = true;
-        }
+//        if (selectedOwner == null) {
+//            hasError = true;
+//        }
         if (farmPhotoUri == null) {
             hasError = true;
         }
@@ -195,7 +217,10 @@ public class AddFarmFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
 
             farmPhotoUri = data.getData();
-            farmPhoto.setImageURI(farmPhotoUri);
+            binding.farmPhoto.setImageURI(farmPhotoUri);
+
+//            if (binding.ownerFarmType.getAdapter() == null || binding.ownerFarmType.getAdapter().isEmpty())
+//                initFarmOwnerType();
         }
     }
 

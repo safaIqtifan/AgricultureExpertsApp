@@ -8,7 +8,10 @@ public class Constants {
     public static String OWNER_COMPANY = "company";
     public static String OWNER_PERSON = "person";
     public static String KEY_FARM_MODEL = "key_farm_model";
+    public static String KEY_USER_MODEL = "key_user_model";
     public static String KEY_PHOTO_URI = "key_photo_uri";
+    public static String KEY_CHAT_ID = "key_chat_id";
+    public static String KEY_MEMBER = "key_member";
 
     public static String FB_CAT_HOT_HOUSE = "Hot_house";
     public static String FB_CAT_GREEN_HOUSE = "Green_house";
@@ -30,5 +33,9 @@ public class Constants {
 
     public static String POST = "Post";
     public static String POST_IMAGES = "PostsImages";
+
+    public static String USER = "User";
+    public static final String CHAT = "chats";
+    public static final String MESSAGES = "messages";
 
 }

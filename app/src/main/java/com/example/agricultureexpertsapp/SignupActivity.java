@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.agricultureexpertsapp.models.UserModel;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,6 +32,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class SignupActivity extends BaseActivity {
@@ -38,7 +51,11 @@ public class SignupActivity extends BaseActivity {
     Button signupButton;
     ImageView gmailBtn, facebookBtn;
     ProgressBar progressBar;
+
+    FirebaseFirestore fireStoreDB;
     private FirebaseAuth fAuth;
+    StorageReference storageRef;
+
     //GoogleSignInClient signInClient;
     GoogleSignInOptions gso;
     private GoogleSignInClient mGoogleSignInClient;
@@ -56,8 +73,11 @@ public class SignupActivity extends BaseActivity {
         mLoginBtn = findViewById(R.id.Logintoaccount);
         gmailBtn = findViewById(R.id.gmailBtn);
         facebookBtn = findViewById(R.id.facebookBtn);
-        fAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
+
+        fireStoreDB = FirebaseFirestore.getInstance();
+        fAuth = FirebaseAuth.getInstance();
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         CreateRequest();
 
@@ -76,42 +96,7 @@ public class SignupActivity extends BaseActivity {
                 String email = e_mail.getText().toString();
                 String mpassword = password.getText().toString();
 
-                if (fname.isEmpty()) {
-                    name.setError("name is Requird");
-                    return;
-                }
-                if (email.isEmpty()) {
-                    e_mail.setError("Email is Requird");
-                    return;
-                }
-
-                if (mpassword.isEmpty()) {
-                    password.setError("password is Requird");
-                    return;
-                }
-
-                if (mpassword.length() < 6) {
-                    password.setError("password Must be 6 or more characters");
-                }
-
-                progressBar.setVisibility(View.VISIBLE);
-
-                fAuth.createUserWithEmailAndPassword(email, mpassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-
-                        Toast.makeText(SignupActivity.this, "User created", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignupActivity.this, HomePageActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-//                        finish();
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                firebaseAuth(fname, email, mpassword);
             }
         });
 
@@ -125,6 +110,89 @@ public class SignupActivity extends BaseActivity {
         });
 
     }
+
+    private void checkData(String fname, String email, String mpassword) {
+
+        if (fname.isEmpty()) {
+            name.setError("name is Requird");
+            return;
+        }
+        if (email.isEmpty()) {
+            e_mail.setError("Email is Requird");
+            return;
+        }
+
+        if (mpassword.isEmpty()) {
+            password.setError("password is Requird");
+            return;
+        }
+
+        if (mpassword.length() < 6) {
+            password.setError("password Must be 6 or more characters");
+        }
+
+    }
+
+    private void firebaseAuth(String fname, String email, String mpassword) {
+
+        checkData(fname, email, mpassword);
+
+        fAuth.createUserWithEmailAndPassword(email, mpassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                FirebaseUser firebaseUser = fAuth.getCurrentUser();
+                assert firebaseUser != null;
+                String userid = firebaseUser.getUid();
+
+                Map<String, Object> userMap = new HashMap<>();
+                userMap.put("user_id", userid);
+                userMap.put("username", fname);
+                userMap.put("imageURL", "default");
+
+                fireStoreDB.collection(Constants.USER).document(userid).set(userMap, SetOptions.merge())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+
+                                    Toast.makeText(SignupActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(SignupActivity.this, HomePageActivity.class)
+                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                                    finish();
+
+                                } else {
+                                    Toast.makeText(SignupActivity.this, "fail_add_user", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+//        fAuth.createUserWithEmailAndPassword(email, mpassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//            @Override
+//            public void onSuccess(AuthResult authResult) {
+//
+//                Toast.makeText(SignupActivity.this, "User created", Toast.LENGTH_SHORT).show();
+//                startActivity(new Intent(SignupActivity.this, HomePageActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+////                        finish();
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//
+//                Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
     @Override
@@ -177,6 +245,8 @@ public class SignupActivity extends BaseActivity {
         }
     }
 
+
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -187,15 +257,49 @@ public class SignupActivity extends BaseActivity {
 
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = fAuth.getCurrentUser();
-//
-//
-//                            user.getUid()
+                            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(SignupActivity.this);
 
+                            if (acct != null) {
+                                String personName = acct.getDisplayName();
+                                String personGivenName = acct.getGivenName();
+                                String personId = acct.getId();
+                                Uri personPhoto = acct.getPhotoUrl();
+//                                uploadPhoto(personPhoto);
 
-                            startActivity(new Intent(getApplicationContext(), HomePageActivity.class));
-                            finish();
+                                FirebaseUser firebaseUser = fAuth.getCurrentUser();
+                                assert firebaseUser != null;
+                                String userid = firebaseUser.getUid();
 
+                                Map<String, Object> userMap = new HashMap<>();
+                                userMap.put("user_id", userid);
+                                userMap.put("username", personName);
+                                userMap.put("imageURL", personPhoto.toString());
+
+                                Log.e("acct", "acct is not null ");
+                                try {
+
+                                    fireStoreDB.collection(Constants.USER).document(userid).set(userMap, SetOptions.merge())
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Log.e("acct", "onComplete");
+                                                    if (task.isSuccessful()) {
+
+                                                        Log.e("acct", "onComplete: - ");
+                                                        Toast.makeText(SignupActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                                                        startActivity(new Intent(SignupActivity.this, HomePageActivity.class)
+                                                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                                                        finish();
+
+                                                    } else {
+                                                        Toast.makeText(SignupActivity.this, "fail_add_user", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                } catch (Exception e) {
+                                    Log.e("acct", e.getMessage());
+                                }
+                            }
                         } else {
                             Toast.makeText(SignupActivity.this, "Sorry auth failed.", Toast.LENGTH_SHORT).show();
 
