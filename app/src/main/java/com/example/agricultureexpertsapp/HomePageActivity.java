@@ -42,6 +42,7 @@ public class HomePageActivity extends BaseActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        toolbar.setTitle("aaaa");
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

@@ -43,7 +43,7 @@
         app:layout_constraintVertical_bias="0.459" />
 
     <TextView
-        android:id="@+id/message_date"
+        android:id="@+id/messageDatTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="date"

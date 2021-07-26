@@ -2,12 +2,24 @@ package com.example.agricultureexpertsapp;
 
 import android.util.Log;
 
-import java.text.ParseException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class DateHandler {
+
+    public static String GetDateString(Date date, String format) {
+
+        DateFormat parser = new SimpleDateFormat(format);
+
+        try {
+            return parser.format(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     public static String covertDateToAgo(Date date) {
 

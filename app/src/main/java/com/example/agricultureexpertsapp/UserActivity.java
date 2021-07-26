@@ -51,7 +51,7 @@ public class UserActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.message_imag);
         userNme = findViewById(R.id.title);
         loadingLY = findViewById(R.id.loadingLY);
-        rv = findViewById(R.id.recyclerView_message);
+        rv = findViewById(R.id.rv);
 
         fireStoreDB = FirebaseFirestore.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();

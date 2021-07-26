@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.agricultureexpertsapp.Adapter.ProfilePagerAdapter;
+import com.example.agricultureexpertsapp.classes.UtilityApp;
 import com.example.agricultureexpertsapp.databinding.ActivityProfileBinding;
 import com.example.agricultureexpertsapp.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +36,6 @@ public class ProfileActivity extends BaseActivity {
 
     Uri profilePhotoUri;
     UserModel userModel;
-    ProgressBar loadingLY;
 
     FirebaseUser firebaseUser;
     FirebaseFirestore fireStoreDB;
@@ -57,8 +56,7 @@ public class ProfileActivity extends BaseActivity {
         binding.viewPager.setAdapter(profilePagerAdapter);
         binding.tabs.setupWithViewPager(binding.viewPager);
 
-        loadingLY = findViewById(R.id.loadingL);
-        GlobalHelper.showProgressDialog(getActiviy(), getString(R.string.please_wait));
+//        loadingLY = findViewById(R.id.loadingL);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userModel = (UserModel) getIntent().getSerializableExtra(Constants.KEY_USER_MODEL);
@@ -69,7 +67,6 @@ public class ProfileActivity extends BaseActivity {
             initData();
         else {
             binding.buttonLY.setVisibility(View.GONE);
-
             getMyProfile();
         }
 
@@ -124,20 +121,26 @@ public class ProfileActivity extends BaseActivity {
 
     private void getMyProfile() {
 
-        GlobalHelper.showProgressDialog(getActiviy(), getString(R.string.please_wait_loading));
-        FirebaseFirestore.getInstance().collection(Constants.USER).document(firebaseUser.getUid()).get().addOnCompleteListener(
-                new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            userModel = task.getResult().toObject(UserModel.class);
-                            initData();
+        userModel = UtilityApp.getUserData();
+        if (userModel == null){
+            GlobalHelper.showProgressDialog(getActiviy(), getString(R.string.please_wait_loading));
+            FirebaseFirestore.getInstance().collection(Constants.USER).document(firebaseUser.getUid()).get().addOnCompleteListener(
+                    new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             GlobalHelper.hideProgressDialog();
-                        } else {
-                            Toast.makeText(getActiviy(), getString(R.string.fail_get_data), Toast.LENGTH_SHORT).show();
+                            if (task.isSuccessful()) {
+                                userModel = task.getResult().toObject(UserModel.class);
+                                initData();
+                            } else {
+                                Toast.makeText(getActiviy(), getString(R.string.fail_get_data), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }else{
+            initData();
+        }
+
     }
 
 
@@ -219,10 +222,10 @@ public class ProfileActivity extends BaseActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-        GlobalHelper.showProgressDialog(getActiviy(), getString(R.string.please_wait));
+                        GlobalHelper.showProgressDialog(getActiviy(), getString(R.string.please_wait));
 
 //                        loadingLY.setVisibility(View.GONE);
-//                        GlobalHelper.hideProgressDialog();
+                        GlobalHelper.hideProgressDialog();
 
                         Glide.with(getActiviy())
                                 .asBitmap()

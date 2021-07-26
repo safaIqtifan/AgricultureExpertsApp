@@ -1,7 +1,5 @@
 package com.example.agricultureexpertsapp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,11 +14,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.agricultureexpertsapp.models.PostsModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -187,7 +187,6 @@ public class AddPostActivity extends BaseActivity {
 
         Map<String, Object> postModelMap = new HashMap<>();
         postModelMap.put("post_id", postId);
-        postModelMap.put("description", postModel.description);
         postModelMap.put("date", postModel.date);
         postModelMap.put("photo", postModel.photo);
         postModelMap.put("created_at", FieldValue.serverTimestamp());
@@ -206,7 +205,8 @@ public class AddPostActivity extends BaseActivity {
                             Toast.makeText(getApplicationContext(), getString(R.string.fail_add_post), Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
+                });      postModelMap.put("description", postModel.description);
+
     }
 
 }

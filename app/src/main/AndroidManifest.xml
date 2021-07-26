@@ -16,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AgricultureExpertsApp">
-        <activity android:name=".MessageActivity"></activity>
+        <activity android:name=".AddEventActivity"></activity>
+        <activity android:name=".LoginAs" />
+        <activity android:name=".MessageActivity" />
         <activity android:name=".UserActivity" />
         <activity android:name=".NotificationDisplay" />
         <activity android:name=".AddPostActivity" />
@@ -30,7 +32,6 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".OnboardingActivity" />
         <activity android:name=".ChatsActivity" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

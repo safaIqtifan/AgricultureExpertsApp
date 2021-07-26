@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,9 +31,9 @@
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/home_bar_background"
         android:orientation="vertical"
         android:padding="10dp"
-        android:background="@drawable/home_bar_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include3">
@@ -54,13 +53,31 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <SearchView
+        <LinearLayout
+            android:id="@+id/searchLy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/box1_white"
-            android:queryHint="@string/search" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_person_search" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search"
+                android:textSize="13sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -74,12 +91,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bar">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/farmsRV"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/box1_white"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/farmsRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/box1_white" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

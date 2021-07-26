@@ -11,6 +11,8 @@ public class Constants {
     public static String KEY_USER_MODEL = "key_user_model";
     public static String KEY_PHOTO_URI = "key_photo_uri";
     public static String KEY_CHAT_ID = "key_chat_id";
+    public static String KEY_USER_NAME = "key_user_name";
+    public static String KEY_USER_AVATAR = "key_user_avatar";
     public static String KEY_MEMBER = "key_member";
 
     public static String FB_CAT_HOT_HOUSE = "Hot_house";

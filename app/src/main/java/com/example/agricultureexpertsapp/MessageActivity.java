@@ -7,8 +7,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.agricultureexpertsapp.Adapter.MessageAdapter;
+import com.example.agricultureexpertsapp.classes.UtilityApp;
 import com.example.agricultureexpertsapp.databinding.ActivityMessageBinding;
+import com.example.agricultureexpertsapp.models.ChatModel;
 import com.example.agricultureexpertsapp.models.FmessageModel;
 import com.example.agricultureexpertsapp.models.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,14 +36,16 @@ public class MessageActivity extends AppCompatActivity {
     MessageAdapter messageAdapter;
     //    RecyclerView rv;
     MessageAdapter adapter;
-    UserModel userModel;
+    UserModel myUserModel;
+    UserModel friendUserModel;
 
-    String chatId;
-    //    FirebaseUser fuser;
+    String chatId, userName, userAvatar;
+
     CollectionReference msgRef;
     DocumentReference chatDoc;
     FirebaseUser firebaseUser;
     FirebaseFirestore fireStoreDB;
+
 
     ActivityMessageBinding binding;
 
@@ -51,10 +56,11 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 //        profileImage = findViewById(R.id.message_imag);
+        binding.include.title.setVisibility(View.VISIBLE);
         binding.include.messageImag.setVisibility(View.VISIBLE);
 //
 //        backBtn = findViewById(R.id.backbtn);
-        binding.include.backbtn.setVisibility(View.GONE);
+        binding.include.backbtn.setVisibility(View.VISIBLE);
 //
 //        rv = findViewById(R.id.recyclerView_message);
 //
@@ -69,14 +75,17 @@ public class MessageActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             chatId = bundle.getString(Constants.KEY_CHAT_ID);
+//            userName = bundle.getString(Constants.KEY_USER_NAME);
+//            userAvatar = bundle.getString(Constants.KEY_USER_AVATAR);
         }
-        userModel = (UserModel) getIntent().getSerializableExtra(Constants.KEY_USER_MODEL);
+        friendUserModel = (UserModel) getIntent().getSerializableExtra(Constants.KEY_USER_MODEL);
+        myUserModel = UtilityApp.getUserData();
 
         fireStoreDB = FirebaseFirestore.getInstance();
 
 //        boolean createChat = false;
         if (chatId == null) {
-            chatId = GlobalHelper.getChatId(firebaseUser.getUid(), userModel.user_id);
+            chatId = GlobalHelper.getChatId(firebaseUser.getUid(), friendUserModel.user_id);
 //            createChat = true;
         }
 
@@ -96,7 +105,21 @@ public class MessageActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (value != null && !value.contains("sender_id")) {
+                if (value != null && value.contains("sender_id")) {
+                    // when chat users is set before
+                    ChatModel chatModel = value.toObject(ChatModel.class);
+                    String senderId = chatModel.sender_id;
+                    String friendName, friendAvatar = "";
+                    if (firebaseUser.getUid().equals(senderId)) {
+                        friendName = chatModel.friend_name;
+                        friendAvatar = chatModel.friend_avatar;
+                    } else {
+                        friendName = chatModel.sender_name;
+                        friendAvatar = chatModel.sender_avatar;
+                    }
+                    setFriendData(friendName, friendAvatar);
+                } else {
+                    // when chat users not set
                     setChatUsers();
                 }
 
@@ -120,6 +143,13 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
+    private void setFriendData(String name, String avatarUrl) {
+        binding.include.title.setText(name);
+
+        Glide.with(this).asBitmap().load(avatarUrl).placeholder(R.drawable.profile).into(binding.include.messageImag);
+
+    }
+
     private void sendMessage() {
 
         final String msg = GlobalHelper.arabicToDecimal(binding.textSend.getText().toString().trim());
@@ -131,7 +161,7 @@ public class MessageActivity extends AppCompatActivity {
 
         Map<String, Object> messageMap = new HashMap<>();
         messageMap.put("user_id", firebaseUser.getUid());
-//        messageMap.put("user_avatar", "");
+        messageMap.put("user_avatar", myUserModel.imageURL);
         messageMap.put("date", FieldValue.serverTimestamp());
         messageMap.put("my_date", new Date());
         messageMap.put("type", "text");
@@ -144,25 +174,28 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void setChatUsers() {
-        if (userModel != null) {
-            Map<String, Object> chatMap = new HashMap<>();
+        Map<String, Object> chatMap = new HashMap<>();
+
+        if (myUserModel != null) {
             chatMap.put("sender_id", firebaseUser.getUid());
-            chatMap.put("sender_name", "my name");
-            chatMap.put("sender_avatar", "null");
-            chatMap.put("friend_id", userModel.user_id);
-            chatMap.put("friend_name", userModel.username);
-            chatMap.put("friend_avatar", userModel.imageURL);
-
-            chatDoc.set(chatMap, SetOptions.merge())
-                    .addOnSuccessListener(documentReference -> {
-                        System.out.println("Log success send message");
-
-                    })
-                    .addOnFailureListener(e -> {
-                        e.printStackTrace();
-                    });
-
+            chatMap.put("sender_name", myUserModel.username);
+            chatMap.put("sender_avatar", myUserModel.imageURL);
         }
+        if (friendUserModel != null) {
+            chatMap.put("friend_id", friendUserModel.user_id);
+            chatMap.put("friend_name", friendUserModel.username);
+            chatMap.put("friend_avatar", friendUserModel.imageURL);
+        }
+        chatMap.put("created_at", FieldValue.serverTimestamp());
+
+        chatDoc.set(chatMap, SetOptions.merge())
+                .addOnSuccessListener(documentReference -> {
+                    System.out.println("Log success send message");
+
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                });
 
     }
 

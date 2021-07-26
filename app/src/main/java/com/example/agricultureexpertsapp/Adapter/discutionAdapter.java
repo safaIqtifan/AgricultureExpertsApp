@@ -11,10 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.agricultureexpertsapp.Constants;
 import com.example.agricultureexpertsapp.DateHandler;
 import com.example.agricultureexpertsapp.R;
-import com.example.agricultureexpertsapp.models.FarmModel;
 import com.example.agricultureexpertsapp.models.PostsModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +28,8 @@ public class discutionAdapter extends RecyclerView.Adapter<discutionAdapter.disc
 
     public Context context;
     public List<PostsModel> list;
-    private Map<String, FarmModel> favMap;
+    private Map<String, PostsModel> favMap;
+    FirebaseFirestore fireStoreDB;
 
     public discutionAdapter(Context context, List<PostsModel> newsList, boolean isFavorite) {
         this.context = context;
@@ -80,14 +85,54 @@ public class discutionAdapter extends RecyclerView.Adapter<discutionAdapter.disc
             postDate = itemView.findViewById(R.id.post_date);
             favBtn = itemView.findViewById(R.id.favBtn);
 
-//            favBtn.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
+            favBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int pos = getAdapterPosition();
+                    PostsModel postsModel = list.get(pos);
+
+
+                    if (favMap.containsKey(postsModel.post_id)) {
+                        fireStoreDB.collection(Constants.POST).document(postsModel.post_id).set(favMap, SetOptions.merge())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
 //
-//                    int pos = getAdapterPosition();
-//                    PostsModel postsModel = list.get(pos);
+//                        // need to delete news from favorite
+//                        RootApplication.dbRealm.executeTransaction(new Realm.Transaction() {
+//                            @Override
+//                            public void execute(Realm realm) {
+//                                FarmModel deleteFarm = favMap.get(farmModel.publishedAt);
+//                                if (deleteFarm != null) {
+//                                    deleteFarm.deleteFromRealm();
+//                                    if (isFavorite) {
+//                                        list.remove(pos);
+//                                        notifyItemRemoved(pos);
+//                                    } else {
+//                                        favMap.remove(farmModel.publishedAt);
+//                                        notifyItemChanged(getAdapterPosition());
+//                                    }
+                                        }
+
+
+                                    }
+                                });
+//                    } else {
+//                        // need to add farm to favorite
+//                        RootApplication.dbRealm.beginTransaction();
+//                        FarmModel addedModel = RootApplication.dbRealm.copyToRealm(farmModel);
+//                        RootApplication.dbRealm.commitTransaction();
+//                        favMap.put(farmModel.publishedAt, addedModel);
+//                        notifyItemChanged(getAdapterPosition());
+//                    }
+//                                }
+//                            });
 //
-//                    if (favMap.containsKey(postsModel.publishedAt)) {
+//
+
+//                    if (favMap.containsKey(postsModel.post_id)) {
 //                        // need to delete news from favorite
 //                        RootApplication.dbRealm.executeTransaction(new Realm.Transaction() {
 //                            @Override
@@ -115,10 +160,15 @@ public class discutionAdapter extends RecyclerView.Adapter<discutionAdapter.disc
 //                        favMap.put(farmModel.publishedAt, addedModel);
 //                        notifyItemChanged(getAdapterPosition());
 //                    }
-//
+
 //                }
 //            });
-
-        }
-    }
+//
+//
+//
+//
+                    }
+                }
+            });
+        }}
 }

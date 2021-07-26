@@ -5,23 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.agricultureexpertsapp.Adapter.FarmsAdapter;
+import com.example.agricultureexpertsapp.ChatsActivity;
 import com.example.agricultureexpertsapp.Constants;
-import com.example.agricultureexpertsapp.UserActivity;
 import com.example.agricultureexpertsapp.MoreDetails;
 import com.example.agricultureexpertsapp.NotificationDisplay;
 import com.example.agricultureexpertsapp.ProfileActivity;
 import com.example.agricultureexpertsapp.R;
+import com.example.agricultureexpertsapp.UserActivity;
+import com.example.agricultureexpertsapp.databinding.FragmentHomeBinding;
 import com.example.agricultureexpertsapp.models.FarmModel;
 import com.example.agricultureexpertsapp.navigation.add_farm.DataCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,33 +36,43 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    ProgressBar loadingLY;
-    ImageView profileImg;
-    RecyclerView farmsRV;
-    SwipeRefreshLayout swipeRefreshLY;
-    ImageView notificationImg;
-    ImageView messages;
+//    ProgressBar loadingLY;
+//    ImageView profileImg;
+//    RecyclerView farmsRV;
+//    SwipeRefreshLayout swipeRefreshLY;
+//    ImageView notificationImg;
+//    ImageView messages;
 
     FirebaseFirestore fireStoreDB;
     List<FarmModel> farmModelList;
     FarmModel farmModel;
     FarmsAdapter adapter;
 
+    FragmentHomeBinding binding;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        loadingLY = root.findViewById(R.id.loadingLY);
-        profileImg = root.findViewById(R.id.profile_img);
-        farmsRV = root.findViewById(R.id.farmsRV);
-        swipeRefreshLY = root.findViewById(R.id.swipeToRefreshLY);
-        notificationImg = root.findViewById(R.id.notification_img);
-        messages = root.findViewById(R.id.messages_img);
+//        loadingLY = root.findViewById(R.id.loadingLY);
+//        profileImg = root.findViewById(R.id.profile_img);
+//        farmsRV = root.findViewById(R.id.farmsRV);
+//        swipeRefreshLY = root.findViewById(R.id.swipeToRefreshLY);
+//        notificationImg = root.findViewById(R.id.notification_img);
+//        messages = root.findViewById(R.id.messages_img);
 
-        farmsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        binding.farmsRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         fireStoreDB = FirebaseFirestore.getInstance();
 
-        notificationImg.setOnClickListener(new View.OnClickListener() {
+        binding.include3.notificationImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), NotificationDisplay.class));
@@ -70,7 +80,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        messages.setOnClickListener(new View.OnClickListener() {
+        binding.include3.messagesImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getActivity(), ChatsActivity.class));
+
+            }
+        });
+
+        binding.searchLy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), UserActivity.class));
@@ -78,7 +97,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        profileImg.setOnClickListener(new View.OnClickListener() {
+        binding.include3.profileImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -90,7 +109,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        swipeRefreshLY.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.swipeToRefreshLY.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getFarmsFromFirebase(false);
@@ -98,17 +117,13 @@ public class HomeFragment extends Fragment {
         });
 
         getFarmsFromFirebase(true);
-
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        return root;
     }
-
 
     private void getFarmsFromFirebase(boolean showLoading) {
 
         if (showLoading) {
-            loadingLY.setVisibility(View.VISIBLE);
-            swipeRefreshLY.setVisibility(View.GONE);
+            binding.loadingLY.setVisibility(View.VISIBLE);
+            binding.swipeToRefreshLY.setVisibility(View.GONE);
         }
 
 //        GlobalHelper.showProgressDialog(getActivity(), getString(R.string.please_wait_loading));
@@ -118,12 +133,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                loadingLY.setVisibility(View.GONE);
-                swipeRefreshLY.setRefreshing(false);
+                binding.loadingLY.setVisibility(View.GONE);
+                binding.swipeToRefreshLY.setRefreshing(false);
 
                 if (task.isSuccessful()) {
 
-                    swipeRefreshLY.setVisibility(View.VISIBLE);
+                    binding.swipeToRefreshLY.setVisibility(View.VISIBLE);
                     farmModelList = new ArrayList<>();
 
                     if (task.getResult() != null) {
@@ -133,8 +148,8 @@ public class HomeFragment extends Fragment {
                             farmModel.farm_id = queryDocumentSnapshot.getId();
                             farmModelList.add(farmModel);
 
-                            adapter.getLocalFavorite();
-                            adapter.notifyDataSetChanged();
+//                            adapter.getLocalFavorite();
+//                            adapter.notifyDataSetChanged();
                         }
 
                         // you can store farm to local database
@@ -152,7 +167,7 @@ public class HomeFragment extends Fragment {
 
     private void initAdapter() {
 
-        adapter = new FarmsAdapter(getActivity(), farmModelList, false, new DataCallBack() {
+        adapter = new FarmsAdapter(getActivity(), farmModelList, new DataCallBack() {
 
             @Override
             public void Result(Object obj, String type, Object otherData) {
@@ -166,7 +181,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        farmsRV.setAdapter(adapter);
+        binding.farmsRV.setAdapter(adapter);
     }
 
 //    @Override

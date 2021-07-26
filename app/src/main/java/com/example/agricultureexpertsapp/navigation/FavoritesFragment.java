@@ -14,7 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.agricultureexpertsapp.Adapter.FarmsAdapter;
 import com.example.agricultureexpertsapp.R;
-import com.example.agricultureexpertsapp.RootApplication;
 import com.example.agricultureexpertsapp.models.FarmModel;
 
 import java.util.ArrayList;
@@ -45,10 +44,10 @@ public class FavoritesFragment extends Fragment {
 
 
         swipeToRefreshLY.setEnabled(false);
-        favoritesModelList = RootApplication.dbRealm.where(FarmModel.class).findAll();
+//        favoritesModelList = RootApplication.dbRealm.where(FarmModel.class).findAll();
 
-        adapter = new FarmsAdapter(getActivity(), favoritesModelList,true);
-        rv.setAdapter(adapter);
+//        adapter = new FarmsAdapter(getActivity(), favoritesModelList,true);
+//        rv.setAdapter(adapter);
 
         return root;
     }

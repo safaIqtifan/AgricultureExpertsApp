@@ -1,5 +1,6 @@
 package com.example.agricultureexpertsapp.navigation;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.agricultureexpertsapp.AddEventActivity;
 import com.example.agricultureexpertsapp.R;
 import com.kizitonwose.calendarview.CalendarView;
 import com.kizitonwose.calendarview.model.CalendarDay;
@@ -26,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.YearMonth;
-import org.threeten.bp.ZoneId;
 import org.threeten.bp.format.TextStyle;
 import org.threeten.bp.temporal.WeekFields;
 
@@ -151,7 +152,10 @@ public class CalendarFragment extends Fragment {
 
         private void setOnClick(View view, TextView dayTxt, TextView dayStatusTxt, LocalDate localDate) {
             view.setOnClickListener(v -> {
+
                 selectDate(dayTxt, dayStatusTxt, localDate);
+                startActivity(new Intent(getActivity(), AddEventActivity.class));
+
             });
         }
 
